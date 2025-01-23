@@ -5,9 +5,12 @@ const {
   GetAllPost,
   GetSinglePost,
   DeleteSinglePost,
+  UpdateSinglePost,
 } = require("../Controllers/post-controllers");
 
 Router.post("/", CloudinaryFileUploder.single("postImage"), CreateNewPost);
+
+Router.put("/:id", CloudinaryFileUploder.single("postImage"), UpdateSinglePost);
 
 Router.get("/", GetAllPost);
 

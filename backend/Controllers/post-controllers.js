@@ -54,6 +54,35 @@ const GetSinglePost = async (req, res) => {
   }
 };
 
+const UpdateSinglePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description } = req.body;
+    let updateData = { title, description, updatedAt: new Date() };
+    if (req.file) {
+      updateData.postImage = req.file.path;
+    }
+    const UpdatePost = await PostModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+
+    if (!UpdatePost) {
+      return res.status(404).json({ message: "Post Not Found" });
+    }
+    res.status(201).json({
+      message: "Post Updated",
+      success: true,
+      UpdatePost,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error,
+    });
+  }
+};
+
 const DeleteSinglePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -76,4 +105,5 @@ module.exports = {
   GetAllPost,
   GetSinglePost,
   DeleteSinglePost,
+  UpdateSinglePost,
 };
