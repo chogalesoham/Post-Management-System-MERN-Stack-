@@ -20,7 +20,20 @@ const CreateNewPost = async (req, res) => {
 };
 
 const GetAllPost = async (req, res) => {
-  res.json("Get All Post");
+  try {
+    const AllPost = await PostModel.find({});
+    res.status(200).json({
+      message: "Get All Post",
+      success: true,
+      AllPost,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error,
+    });
+  }
 };
 
 module.exports = {
