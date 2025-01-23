@@ -54,8 +54,26 @@ const GetSinglePost = async (req, res) => {
   }
 };
 
+const DeleteSinglePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await PostModel.findByIdAndDelete({ _id: id });
+    res.status(200).json({
+      message: "Delete Single Post",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   CreateNewPost,
   GetAllPost,
   GetSinglePost,
+  DeleteSinglePost,
 };
