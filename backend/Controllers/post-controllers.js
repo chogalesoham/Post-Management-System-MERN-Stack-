@@ -36,7 +36,26 @@ const GetAllPost = async (req, res) => {
   }
 };
 
+const GetSinglePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const SinglePost = await PostModel.findById({ _id: id });
+    res.status(200).json({
+      message: "Get Single Post",
+      success: true,
+      SinglePost,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   CreateNewPost,
   GetAllPost,
+  GetSinglePost,
 };
