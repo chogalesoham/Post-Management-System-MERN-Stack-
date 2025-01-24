@@ -21,17 +21,37 @@ const CreateNewPost = async (req, res) => {
 
 const GetAllPost = async (req, res) => {
   try {
-    const AllPost = await PostModel.find({});
+    let { limit, page } = req.query;
+
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 5;
+
+    const skip = (page - 1) * limit;
+    const totalCount = await PostModel.countDocuments();
+    const AllPost = await PostModel.find({})
+      .skip(skip)
+      .limit(limit)
+      .sort({ updatedAt: -1 });
+
+    const TotalPages = Math.ceil(totalCount / limit);
     res.status(200).json({
       message: "Get All Post",
       success: true,
-      AllPost,
+      data: {
+        AllPost: AllPost,
+        pagination: {
+          TotalPost: totalCount,
+          TotalPages: TotalPages,
+          currentPage: page,
+          pageSize: limit,
+        },
+      },
     });
   } catch (error) {
     res.status(500).json({
       message: "Internal Server Error",
       success: false,
-      error: error,
+      error: error.message,
     });
   }
 };
