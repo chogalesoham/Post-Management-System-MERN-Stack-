@@ -1,8 +1,15 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AllPost from "./Componts/all-post";
+import Post from "./Componts/post";
+
 const App = () => {
   return (
-    <div>
-      <h1 className=" text-4xl font-bold text-center">Post Management app</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AllPost />} />
+        <Route path="/:id" element={<Post />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
