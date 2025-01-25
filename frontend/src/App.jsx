@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AllPost from "./Componts/all-post";
-import Post from "./Componts/post";
+import AllPost from "./Components/all-post";
+import Post from "./Components/post";
 
 const App = () => {
   return (

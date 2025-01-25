@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 
-const PostForm = ({ setShowFrom }) => {
-  const handleClose = (e) => {
+const PostForm = ({ setShowForm }) => {
+  const handleCloseFrom = (e) => {
     if (e.target === e.currentTarget) {
-      setShowFrom(false);
+      setShowForm(false);
     }
   };
 
   return (
     <div
-      onClick={handleClose}
+      onClick={handleCloseFrom}
       className="fixed inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center"
     >
       <div className="relative mx-auto w-full max-w-lg p-4 bg-white  rounded-2xl shadow-2xl">
@@ -85,7 +85,7 @@ const PostForm = ({ setShowFrom }) => {
 
 // Prop types validation
 PostForm.propTypes = {
-  setShowFrom: PropTypes.func.isRequired,
+  setShowForm: PropTypes.func.isRequired,
 };
 
 export default PostForm;
