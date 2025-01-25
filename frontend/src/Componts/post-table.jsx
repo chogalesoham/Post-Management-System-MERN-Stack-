@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
-const PostTable = ({ showPostCard, setShowPostCard }) => {
-  const items = [1, 2, 3, 4, 5];
+const PostTable = ({ showPostCard, setShowPostCard, postData }) => {
   return (
     <div className="overflow-x-auto">
       <table className="table-auto border-collapse border border-gray-200 w-full text-sm bg-white rounded-lg shadow container mx-auto">
@@ -23,24 +22,23 @@ const PostTable = ({ showPostCard, setShowPostCard }) => {
           </tr>
         </thead>
         <tbody>
-          {items.map(() => (
+          {postData?.data?.AllPost?.map((post) => (
             <tr
-              key={Math.random()}
+              key={post?._id}
               className="hover:bg-gray-50 transition duration-300 ease-in-out"
             >
               <td className="border border-gray-200 px-6 text-center">
                 <img
-                  src="https://tse1.mm.bing.net/th?id=OIP.IhGijgoVTEs0_4rPuUXboQHaE8&pid=Api&P=0&h=180"
+                  src={post?.postImage}
                   alt="Profile"
                   className="w-15 h-15 object-cover rounded-full border-4 border-purple-300 shadow-lg m-1"
                 />
               </td>
               <td className="border border-gray-200 px-6 text-gray-700 font-medium text-nowrap">
-                Sample Title
+                {post?.title}
               </td>
               <td className="border border-gray-200 px-6 text-gray-600 text-nowrap">
-                This is a sample description for the table item. Add any
-                relevant details here.
+                {post?.description}
               </td>
               <td className="border border-gray-200 px-6 text-center">
                 <div className="flex justify-center gap-6">
@@ -77,6 +75,7 @@ const PostTable = ({ showPostCard, setShowPostCard }) => {
 PostTable.propTypes = {
   setShowPostCard: PropTypes.func.isRequired,
   showPostCard: PropTypes.func.isRequired,
+  postData: PropTypes.func.isRequired,
 };
 
 export default PostTable;

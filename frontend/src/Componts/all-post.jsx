@@ -1,12 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "./pagination";
 import PostTable from "./post-table";
 import PostFrom from "./post-from";
 import PostCard from "./post-card";
+import { GetPostApiColl } from "../api";
 
 const AllPost = () => {
   const [showForm, setShowFrom] = useState(false);
   const [showPostCard, setShowPostCard] = useState(false);
+  const [postData, setPostData] = useState();
+
+  const GetPostData = async (page = 1, limit = 5) => {
+    try {
+      const response = await GetPostApiColl(page, limit);
+      setPostData(response);
+    } catch (error) {
+      console.log("Error fetching posts:", error);
+    }
+  };
+  console.log(postData);
+
+  useEffect(() => {
+    GetPostData(1, 5);
+  }, []);
 
   return (
     <div className="py-10 px-12">
@@ -24,6 +40,7 @@ const AllPost = () => {
         </div>
 
         <PostTable
+          postData={postData}
           showPostCard={showPostCard}
           setShowPostCard={setShowPostCard}
         />
