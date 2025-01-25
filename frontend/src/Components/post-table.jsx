@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
-const PostTable = ({ showPostCard, setShowPostCard, postData }) => {
+const PostTable = ({ showPostCard, setShowPostCard, allPosts }) => {
   return (
     <div className="overflow-x-auto">
       <table className="table-auto border-collapse border border-gray-200 w-full text-sm bg-white rounded-lg shadow container mx-auto">
@@ -22,7 +22,7 @@ const PostTable = ({ showPostCard, setShowPostCard, postData }) => {
           </tr>
         </thead>
         <tbody>
-          {postData?.data?.AllPost?.map((post) => (
+          {allPosts.map((post) => (
             <tr
               key={post?._id}
               className="hover:bg-gray-50 transition duration-300 ease-in-out"
@@ -75,7 +75,7 @@ const PostTable = ({ showPostCard, setShowPostCard, postData }) => {
 PostTable.propTypes = {
   setShowPostCard: PropTypes.func.isRequired,
   showPostCard: PropTypes.func.isRequired,
-  postData: PropTypes.func.isRequired,
+  allPosts: PropTypes.func.isRequired,
 };
 
 export default PostTable;
