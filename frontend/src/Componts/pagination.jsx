@@ -1,13 +1,13 @@
 const Pagination = () => {
   return (
-    <div className="flex items-center justify-between py-3 px-4">
+    <div className="flex flex-col sm:flex-row items-center justify-between py-3 px-4 mt-4">
       <div>
         <p className="text-lg font-semibold text-gray-800">Page 1 of 5</p>
       </div>
-      <ul className="flex justify-center items-center gap-4 mt-4 border border-gray-400 shadow-md py-1 px-2">
+      <ul className="flex flex-wrap justify-center items-center gap-4 mt-4 sm:mt-0 border border-gray-400 shadow-md py-1 px-2 rounded-lg">
         <li>
           <button
-            className="flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600  shadow-lg"
+            className="flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600 shadow-lg"
             title="Previous"
           >
             Previous
@@ -28,10 +28,9 @@ const Pagination = () => {
             </li>
           ))}
         </div>
-
         <li>
           <button
-            className="flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600 "
+            className="flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600"
             title="Next"
           >
             Next
