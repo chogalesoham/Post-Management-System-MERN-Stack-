@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://post-management-system-mern-stack.onrender.com";
 
 export const GetPostApiColl = async (page = 1, limit = 5) => {
   const url = `${BASE_URL}/api/post?page=${page}&limit=${limit}`;
