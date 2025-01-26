@@ -17,7 +17,9 @@ const Pagination = ({ pagination, onPageChange }) => {
         <li>
           <button
             onClick={() => onPageChange(currentPage - 1)}
-            className="flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600 shadow-lg"
+            className={`flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600 shadow-lg ${
+              currentPage === 1 ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
             title="Previous"
             disabled={currentPage === 1}
           >
@@ -43,7 +45,11 @@ const Pagination = ({ pagination, onPageChange }) => {
         <li>
           <button
             onClick={() => onPageChange(currentPage + 1)}
-            className="flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600"
+            className={`flex items-center justify-center py-2 px-4 rounded-lg bg-gray-200 text-gray-600 shadow-lg ${
+              currentPage === TotalPages
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
+            }`}
             title="Next"
             disabled={currentPage === TotalPages}
           >
