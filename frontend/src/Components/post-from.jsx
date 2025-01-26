@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { CreatePostApiColl } from "../api";
+import { useEffect, useState } from "react";
+import { CreatePostApiColl, UpadtePostApiColl } from "../api";
 import { Toast } from "../toast";
 import { FaSpinner } from "react-icons/fa";
 
-const PostForm = ({ setShowForm, GetPostData }) => {
+const PostForm = ({ setShowForm, GetPostData, updatePostObj }) => {
   const [loding, setLoding] = useState(false);
+  const [updateMode, setUpdateMode] = useState(false);
+
   const [postData, setPostData] = useState({
     title: "",
     description: "",
@@ -17,6 +19,16 @@ const PostForm = ({ setShowForm, GetPostData }) => {
       setShowForm(false);
     }
   };
+
+  useEffect(() => {
+    if (updatePostObj) {
+      setUpdateMode(true);
+      setPostData(updatePostObj);
+    } else {
+      setUpdateMode(false);
+      setPostData({ title: "", description: "", postImage: null });
+    }
+  }, [updatePostObj]);
 
   const handelChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +43,9 @@ const PostForm = ({ setShowForm, GetPostData }) => {
     e.preventDefault();
     try {
       setLoding(true);
-      const { success, message } = await CreatePostApiColl(postData);
+      const { success, message } = updateMode
+        ? await UpadtePostApiColl(postData, postData?._id)
+        : await CreatePostApiColl(postData);
       if (success) {
         Toast(message, "success");
         setLoding(false);
@@ -51,7 +65,7 @@ const PostForm = ({ setShowForm, GetPostData }) => {
     >
       <div className="relative mx-auto w-full max-w-lg p-4 bg-white  rounded-2xl shadow-2xl">
         <h1 className="text-4xl font-extrabold text-center text-black mb-4">
-          Create a Post
+          {updateMode ? "Update Post" : "Create New Post"}
         </h1>
         <form
           onSubmit={(e) => handelSubmit(e)}
@@ -139,6 +153,7 @@ const PostForm = ({ setShowForm, GetPostData }) => {
 PostForm.propTypes = {
   setShowForm: PropTypes.func.isRequired,
   GetPostData: PropTypes.func.isRequired,
+  updatePostObj: PropTypes.object, // This should be optional
 };
 
 export default PostForm;

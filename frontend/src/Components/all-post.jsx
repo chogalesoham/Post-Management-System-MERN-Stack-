@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { GetPostApiColl } from "../api";
+import {
+  DeletePostApiColl,
+  GetPostApiColl,
+  GetSinglePostApiColl,
+} from "../api";
 import PostTable from "../Components/post-table";
 import Pagination from "../Components/pagination";
 import PostForm from "../Components/post-from";
 import PostCard from "../Components/post-card";
 import { ToastContainer } from "react-toastify";
+import { Toast } from "../toast";
 
 const AllPost = () => {
   const [showForm, setShowForm] = useState(false);
@@ -17,7 +22,10 @@ const AllPost = () => {
     currentPage: 1,
     pageSize: 5,
   });
+  const [updatePostObj, setUpdatePostObj] = useState(null);
+  const [singlePostData, setSinglePostData] = useState(null);
 
+  // Fetch post data
   const GetPostData = async (page = 1, limit = 5) => {
     try {
       const response = await GetPostApiColl(page, limit);
@@ -46,12 +54,47 @@ const AllPost = () => {
     }
   };
 
+  const GetSinglePost = async (id) => {
+    try {
+      const response = await GetSinglePostApiColl(id);
+      setSinglePostData(response?.SinglePost);
+    } catch (error) {
+      console.error("Error fetching post:", error.message);
+    }
+  };
+
   useEffect(() => {
     GetPostData(1, 5);
   }, []);
 
+  // Handle page change in pagination
   const handlePageChange = (page) => {
     GetPostData(page, pagination.pageSize);
+  };
+
+  // Handle post update
+  const handelUpdatePost = (postObj) => {
+    setUpdatePostObj(postObj);
+    setShowForm(true); // Open the form explicitly for updating
+  };
+
+  // Handle Delete
+  const handelDeletePost = async (postObj) => {
+    try {
+      const { success, message } = await DeletePostApiColl(postObj?._id);
+      if (success) {
+        Toast(message, "error");
+      }
+      GetPostData();
+    } catch (error) {
+      Toast(error, "error");
+    }
+  };
+
+  // Close the form and reset updatePostObj
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setUpdatePostObj(null);
   };
 
   return (
@@ -64,7 +107,10 @@ const AllPost = () => {
               Post Management App
             </h2>
             <button
-              onClick={() => setShowForm(!showForm)}
+              onClick={() => {
+                setShowForm(!showForm);
+                setUpdatePostObj(null); // Ensure no post data is set during a new post
+              }}
               className="bg-purple-500 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-600 transition duration-300 ease-in-out"
             >
               Add New Post
@@ -76,6 +122,9 @@ const AllPost = () => {
             allPosts={allPosts}
             showPostCard={showPostCard}
             setShowPostCard={setShowPostCard}
+            handelUpdatePost={handelUpdatePost}
+            handelDeletePost={handelDeletePost}
+            GetSinglePost={GetSinglePost}
           />
 
           {/* Pagination */}
@@ -88,9 +137,18 @@ const AllPost = () => {
 
           {/* Conditional Rendering */}
           {showForm && (
-            <PostForm GetPostData={GetPostData} setShowForm={setShowForm} />
+            <PostForm
+              GetPostData={GetPostData}
+              setShowForm={handleCloseForm} // Ensure proper closure
+              updatePostObj={updatePostObj}
+            />
           )}
-          {showPostCard && <PostCard setShowPostCard={setShowPostCard} />}
+          {showPostCard && (
+            <PostCard
+              setShowPostCard={setShowPostCard}
+              SinglePostData={singlePostData}
+            />
+          )}
         </div>
       </div>
       <ToastContainer />
