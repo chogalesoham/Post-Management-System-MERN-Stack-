@@ -5,6 +5,7 @@ import PostTable from "../Components/post-table";
 import Pagination from "../Components/pagination";
 import PostForm from "../Components/post-from";
 import PostCard from "../Components/post-card";
+import { ToastContainer } from "react-toastify";
 
 const AllPost = () => {
   const [showForm, setShowForm] = useState(false);
@@ -54,38 +55,46 @@ const AllPost = () => {
   };
 
   return (
-    <div className="py-10 px-12">
-      <div className="shadow-lg border border-amber-100 p-5 container mx-auto">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-6 bg-white rounded-lg">
-          <h2 className="text-2xl font-bold text-gray-700 mb-4 sm:mb-0 text-center md:text-left">
-            Post Management App
-          </h2>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="bg-purple-500 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-600 transition duration-300 ease-in-out"
-          >
-            Add New Post
-          </button>
+    <>
+      <div className="py-10 px-12">
+        <div className="shadow-lg border border-amber-100 p-5 container mx-auto">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-6 bg-white rounded-lg">
+            <h2 className="text-2xl font-bold text-gray-700 mb-4 sm:mb-0 text-center md:text-left">
+              Post Management App
+            </h2>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="bg-purple-500 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-600 transition duration-300 ease-in-out"
+            >
+              Add New Post
+            </button>
+          </div>
+
+          {/* Post Table */}
+          <PostTable
+            allPosts={allPosts}
+            showPostCard={showPostCard}
+            setShowPostCard={setShowPostCard}
+          />
+
+          {/* Pagination */}
+          {pagination.TotalPages > 1 && (
+            <Pagination
+              pagination={pagination}
+              onPageChange={handlePageChange}
+            />
+          )}
+
+          {/* Conditional Rendering */}
+          {showForm && (
+            <PostForm GetPostData={GetPostData} setShowForm={setShowForm} />
+          )}
+          {showPostCard && <PostCard setShowPostCard={setShowPostCard} />}
         </div>
-
-        {/* Post Table */}
-        <PostTable
-          allPosts={allPosts}
-          showPostCard={showPostCard}
-          setShowPostCard={setShowPostCard}
-        />
-
-        {/* Pagination */}
-        {pagination.TotalPages > 1 && (
-          <Pagination pagination={pagination} onPageChange={handlePageChange} />
-        )}
-
-        {/* Conditional Rendering */}
-        {showForm && <PostForm setShowForm={setShowForm} />}
-        {showPostCard && <PostCard setShowPostCard={setShowPostCard} />}
       </div>
-    </div>
+      <ToastContainer />
+    </>
   );
 };
 

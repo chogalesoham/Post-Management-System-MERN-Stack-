@@ -9,15 +9,38 @@ export const GetPostApiColl = async (page = 1, limit = 5) => {
         "Content-Type": "application/json",
       },
     };
-
     const res = await fetch(url, options);
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
-
     const data = await res.json();
     return data;
   } catch (error) {
     console.log("Error:", error);
+  }
+};
+
+export const CreatePostApiColl = async (postobj) => {
+  const url = `${BASE_URL}/api/post`;
+  try {
+    const formData = new FormData();
+
+    for (let key in postobj) {
+      formData.append(key, postobj[key]);
+    }
+    const options = {
+      method: "POST",
+      body: formData,
+    };
+    const res = await fetch(url, options);
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error in CreatePostApiColl:", error);
+    throw error;
   }
 };
